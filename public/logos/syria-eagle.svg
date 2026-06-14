@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Syrian Arab Republic emblem (placeholder)">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="#d4af37"/>
+      <stop offset="100%" stop-color="#a8862a"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="#0a1d3a"/>
+  <!-- Stylized eagle silhouette (placeholder, NOT the official emblem) -->
+  <g fill="url(#gold)">
+    <path d="M32 14c-2 0-3 1-4 2l-3 4 7 4 7-4-3-4c-1-1-2-2-4-2z"/>
+    <path d="M14 28l8-1c2 0 3 1 4 2l6 5 6-5c1-1 2-2 4-2l8 1-4 6-6 1-1 5h-14l-1-5-6-1z"/>
+    <rect x="29" y="44" width="6" height="8" rx="1"/>
+    <path d="M22 50h20l-2 4H24z"/>
+  </g>
+  <text x="32" y="60" text-anchor="middle" font-size="3.6" font-family="system-ui, sans-serif" fill="#d4af37" font-weight="600">الجمهورية العربية السورية</text>
+</svg>

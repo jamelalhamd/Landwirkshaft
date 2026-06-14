@@ -1,0 +1,101 @@
+{
+  "meta": {
+    "siteName": "General Commission for Scientific Agricultural Research",
+    "siteShort": "GCSAR",
+    "tagline": "Science in service of Syrian agriculture",
+    "country": "Syrian Arab Republic"
+  },
+  "common": {
+    "skipToContent": "Skip to main content",
+    "readMore": "Read more",
+    "viewAll": "View all",
+    "search": "Search",
+    "loading": "Loading…",
+    "menu": "Menu",
+    "close": "Close",
+    "language": "Language",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "accessibility": "Accessibility",
+    "increaseFont": "Increase font",
+    "decreaseFont": "Decrease font",
+    "resetFont": "Reset font",
+    "highContrast": "High contrast",
+    "readAloud": "Read aloud",
+    "officialBadge": "Official site",
+    "publishedOn": "Published on",
+    "category": "Category"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "staff": "Staff Directory",
+    "news": "News & Announcements",
+    "documents": "Official Documents",
+    "research": "Research & Projects",
+    "gallery": "Media Gallery",
+    "contact": "Contact",
+    "admin": "Admin"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "General Commission for Scientific Agricultural Research",
+      "title": "Science and innovation for food security",
+      "subtitle": "An official platform bringing together agricultural research, scientific projects, and government documents — built to government-grade security and performance standards.",
+      "ctaPrimary": "Explore Research",
+      "ctaSecondary": "About the Commission"
+    },
+    "ticker": {
+      "label": "Breaking"
+    },
+    "quickServices": {
+      "title": "Quick Services",
+      "subtitle": "Direct links to the most-used services",
+      "items": {
+        "seedRegistry": { "title": "Seed & Variety Registry", "desc": "Search approved varieties" },
+        "library": { "title": "Digital Library", "desc": "Thousands of peer-reviewed papers" },
+        "decisions": { "title": "Official Decisions", "desc": "Latest decrees and bulletins" },
+        "contact": { "title": "Contact Centers", "desc": "Research centers across governorates" }
+      }
+    },
+    "stats": {
+      "title": "The Commission in Numbers",
+      "research": "Published papers",
+      "projects": "Active projects",
+      "seeds": "Registered varieties",
+      "researchers": "Researchers"
+    },
+    "latestNews": {
+      "title": "Latest News",
+      "subtitle": "Most recent updates and official announcements"
+    },
+    "sections": {
+      "title": "Platform Pillars",
+      "research": { "title": "Research & Projects", "desc": "A digital library of peer-reviewed papers and field reports." },
+      "documents": { "title": "Official Documents", "desc": "Government decisions, reports, and publications." },
+      "staff": { "title": "Staff Directory", "desc": "Direct contact with researchers and specialists." },
+      "gallery": { "title": "Media Gallery", "desc": "Photos and videos from the Commission's events." }
+    }
+  },
+  "footer": {
+    "about": "The General Commission for Scientific Agricultural Research is a government institution dedicated to developing the agricultural sector of the Syrian Arab Republic.",
+    "quickLinks": "Quick Links",
+    "contactUs": "Contact Us",
+    "address": "Address: Douma, Damascus Countryside, Syrian Arab Republic",
+    "workingHours": "Working hours: Sun–Thu, 8:30 AM – 3:30 PM",
+    "phone": "Phone",
+    "email": "Email",
+    "follow": "Follow us",
+    "rights": "All rights reserved",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Use"
+  },
+  "accessibility": {
+    "title": "Accessibility options",
+    "fontSize": "Font size",
+    "contrast": "Contrast",
+    "motion": "Reduce motion",
+    "tts": "Text to speech"
+  }
+}
