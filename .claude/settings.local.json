@@ -7,7 +7,9 @@
       "Bash(Stop-Process -Force)",
       "Bash(Write-Host \"All node processes stopped\")",
       "PowerShell(Get-Process *)",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "PowerShell(Set-Location \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\"; npx tsc --noEmit 2>&1 | Where-Object { $_ -match \"NavigationDrawer|Header\\\\.tsx|drawer\" })",
+      "PowerShell(Set-Location \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\"; $result = npx tsc --noEmit 2>&1; $result | Where-Object { $_ -notmatch \"middleware|supabase\" } | Select-Object -First 30)"
     ]
   }
 }

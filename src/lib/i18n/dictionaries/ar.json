@@ -36,7 +36,28 @@
     "research": "الأبحاث والمشاريع",
     "gallery": "معرض الوسائط",
     "contact": "تواصل معنا",
-    "admin": "لوحة التحكم"
+    "admin": "لوحة التحكم",
+    "events": "فعاليات الهيئة",
+    "varieties": "أصناف معتمدة",
+    "studies": "دراسات",
+    "training": "دورات تدريبية",
+    "tenders": "مناقصات",
+    "seminars": "ندوات",
+    "newsletters": "نشرات إخبارية",
+    "workshops": "ورشات عمل",
+    "fieldDay": "يوم حقلي",
+    "latestTopics": "أحدث المواضيع"
+  },
+  "drawer": {
+    "allSections": "جميع الأقسام",
+    "mainPages": "الصفحات الرئيسية",
+    "newsEvents": "الأخبار والفعاليات",
+    "knowledge": "المعرفة والتدريب",
+    "servicesDocuments": "الخدمات والوثائق",
+    "upcomingEvents": "الفعاليات القادمة",
+    "pastEvents": "الفعاليات السابقة",
+    "searchPlaceholder": "ابحث في الموقع...",
+    "quickContact": "تواصل سريع"
   },
   "home": {
     "hero": {

@@ -36,7 +36,28 @@
     "research": "Research & Projects",
     "gallery": "Media Gallery",
     "contact": "Contact",
-    "admin": "Admin"
+    "admin": "Admin",
+    "events": "Commission Events",
+    "varieties": "Approved Varieties",
+    "studies": "Studies",
+    "training": "Training Courses",
+    "tenders": "Tenders",
+    "seminars": "Seminars",
+    "newsletters": "Newsletters",
+    "workshops": "Workshops",
+    "fieldDay": "Field Day",
+    "latestTopics": "Latest Topics"
+  },
+  "drawer": {
+    "allSections": "All Sections",
+    "mainPages": "Main Pages",
+    "newsEvents": "News & Events",
+    "knowledge": "Knowledge & Training",
+    "servicesDocuments": "Services & Documents",
+    "upcomingEvents": "Upcoming Events",
+    "pastEvents": "Past Events",
+    "searchPlaceholder": "Search the site...",
+    "quickContact": "Quick Contact"
   },
   "home": {
     "hero": {
