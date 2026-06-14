@@ -178,4 +178,19 @@
     white-space: nowrap !important;
     border: 0 !important;
   }
+
+  /* Mobile nav active link — start border highlight */
+  .nav-active-start {
+    border-inline-start-width: 2px;
+    padding-inline-start: 18px;
+  }
+}
+
+/* =========================================================
+   Reduced-motion: respect user preference for drawer
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  #mobile-menu {
+    transition: none !important;
+  }
 }
