@@ -91,12 +91,12 @@ export function Header({ locale, dict }: Props) {
                 />
                 <div className="hidden h-10 w-px bg-border/60 sm:block" aria-hidden />
                 <Image
-                  src="/logos/gcsar-logo.svg"
+                  src="/logos/logo2.png"
                   alt=""
-                  width={44}
-                  height={44}
-                  className="transition-transform duration-300 group-hover:scale-105"
-                  style={{ width: 44, height: 44 }}
+                  width={56}
+                  height={56}
+                  className="object-contain transition-transform duration-300 group-hover:scale-105"
+                  style={{ width: 56, height: 56 }}
                 />
               </div>
 
