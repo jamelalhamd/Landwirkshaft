@@ -9,7 +9,13 @@
       "PowerShell(Get-Process *)",
       "Bash(curl *)",
       "PowerShell(Set-Location \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\"; npx tsc --noEmit 2>&1 | Where-Object { $_ -match \"NavigationDrawer|Header\\\\.tsx|drawer\" })",
-      "PowerShell(Set-Location \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\"; $result = npx tsc --noEmit 2>&1; $result | Where-Object { $_ -notmatch \"middleware|supabase\" } | Select-Object -First 30)"
+      "PowerShell(Set-Location \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\"; $result = npx tsc --noEmit 2>&1; $result | Where-Object { $_ -notmatch \"middleware|supabase\" } | Select-Object -First 30)",
+      "Bash(Start-Sleep -Seconds 10)",
+      "Bash(Get-Content \"C:\\\\Users\\\\takir\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-takir-Desktop-test-antigravitzy-landwirksahaf-landwirksahft-opts\\\\14d5d348-f596-461a-8e7a-e8b3874a7e45\\\\tasks\\\\byl1v9wdb.output\" -Tail 30)",
+      "Bash(powershell *)",
+      "Bash(npx tsc *)",
+      "Bash(npm install *)",
+      "WebFetch(domain:gcsar.gov.sy)"
     ]
   }
 }

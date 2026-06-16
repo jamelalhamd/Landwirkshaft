@@ -13,11 +13,19 @@ const now = () => new Date().toISOString()
 const daysAgo = (n: number) => new Date(Date.now() - n * 86_400_000).toISOString()
 
 const departments: Department[] = [
-  { id: 'dept-1', slug: 'plant-protection', name_ar: 'إدارة وقاية النبات', name_en: 'Plant Protection', description_ar: 'البحوث المتعلقة بأمراض النبات والآفات.', description_en: 'Research on plant diseases and pests.', parent_id: null },
-  { id: 'dept-2', slug: 'field-crops', name_ar: 'إدارة المحاصيل الحقلية', name_en: 'Field Crops', description_ar: 'تحسين أصناف المحاصيل الاستراتيجية.', description_en: 'Improvement of strategic crop varieties.', parent_id: null },
-  { id: 'dept-3', slug: 'horticulture', name_ar: 'إدارة البستنة', name_en: 'Horticulture', description_ar: 'بحوث الأشجار المثمرة والخضروات.', description_en: 'Research on fruit trees and vegetables.', parent_id: null },
-  { id: 'dept-4', slug: 'soil-water', name_ar: 'إدارة التربة والمياه', name_en: 'Soil & Water', description_ar: 'إدارة الموارد المائية والتربة.', description_en: 'Soil and water resource management.', parent_id: null },
-  { id: 'dept-5', slug: 'biotech', name_ar: 'إدارة التقانات الحيوية', name_en: 'Biotechnology', description_ar: 'البحوث في التقانات الحيوية الحديثة.', description_en: 'Modern biotechnology research.', parent_id: null },
+  // ── Research Administrations ──────────────────────────────────────────────
+  { id: 'dept-1', slug: 'crops', name_ar: 'إدارة بحوث المحاصيل الحقلية', name_en: 'Crops Research Administration', description_ar: 'تحسين أصناف المحاصيل الحقلية الاستراتيجية كالقمح والشعير والذرة والقطن.', description_en: 'Improvement of strategic field crops including wheat, barley, maize, and cotton.', parent_id: null },
+  { id: 'dept-2', slug: 'horticulture', name_ar: 'إدارة بحوث البستنة', name_en: 'Horticulture Research Administration', description_ar: 'بحوث الأشجار المثمرة والخضروات والزيتون والكروم.', description_en: 'Research on fruit trees, vegetables, olives, and vineyards.', parent_id: null },
+  { id: 'dept-3', slug: 'natural-resources', name_ar: 'إدارة بحوث الموارد الطبيعية', name_en: 'Natural Resources Research Administration', description_ar: 'إدارة التربة والمياه والغابات والأراضي الجافة.', description_en: 'Management of soil, water, forests, and dryland agriculture.', parent_id: null },
+  { id: 'dept-4', slug: 'plant-protection', name_ar: 'إدارة بحوث وقاية النبات', name_en: 'Plant Protection Research Administration', description_ar: 'البحوث المتعلقة بأمراض النبات والآفات الحشرية ومكافحتها.', description_en: 'Research on plant diseases, insect pests, and integrated pest management.', parent_id: null },
+  { id: 'dept-5', slug: 'economic-studies', name_ar: 'إدارة الدراسات الاقتصادية والاجتماعية', name_en: 'Economic & Social Studies Administration', description_ar: 'دراسات الاقتصاد الزراعي والسياسات الريفية والتنمية المجتمعية.', description_en: 'Agricultural economics, rural policy, and community development studies.', parent_id: null },
+  { id: 'dept-6', slug: 'cotton', name_ar: 'إدارة بحوث القطن', name_en: 'Cotton Research Administration', description_ar: 'بحوث متخصصة في تحسين وإنتاج القطن السوري.', description_en: 'Specialized research on the improvement and production of Syrian cotton.', parent_id: null },
+  { id: 'dept-7', slug: 'livestock', name_ar: 'إدارة بحوث الثروة الحيوانية', name_en: 'Livestock Research Administration', description_ar: 'تحسين سلالات الحيوانات وبحوث التغذية والصحة الحيوانية.', description_en: 'Animal breed improvement, nutrition research, and veterinary health.', parent_id: null },
+  // ── Research Divisions ────────────────────────────────────────────────────
+  { id: 'div-1', slug: 'biotechnology', name_ar: 'شعبة التقانات الحيوية', name_en: 'Biotechnology Division', description_ar: 'بحوث في زراعة الأنسجة والتقانات الجزيئية والهندسة الوراثية.', description_en: 'Research in tissue culture, molecular techniques, and genetic engineering.', parent_id: null },
+  { id: 'div-2', slug: 'food-technology', name_ar: 'شعبة التكنولوجيا الغذائية', name_en: 'Food Technology Division', description_ar: 'تطوير تقنيات تصنيع الغذاء وتحسين الجودة والسلامة الغذائية.', description_en: 'Development of food processing technologies and food safety improvement.', parent_id: null },
+  { id: 'div-3', slug: 'genetic-resources', name_ar: 'شعبة الموارد الوراثية', name_en: 'Genetic Resources Division', description_ar: 'جمع وحفظ وتوثيق الموارد الوراثية النباتية والحيوانية السورية.', description_en: 'Collection, preservation, and documentation of Syrian plant and animal genetic resources.', parent_id: null },
+  { id: 'div-4', slug: 'technology-transfer', name_ar: 'شعبة نقل التقانة', name_en: 'Technology Transfer Division', description_ar: 'نشر نتائج الأبحاث وتطبيقها الميداني لدى المزارعين.', description_en: 'Dissemination and field application of research results to farmers.', parent_id: null },
 ]
 
 const staff: StaffMember[] = [

@@ -16,10 +16,12 @@ export async function refreshSession(request: NextRequest) {
   const supabase = createServerClient(url, key, {
     cookies: {
       getAll: () => request.cookies.getAll(),
-      setAll: (toSet) => {
+      setAll: (toSet: Array<{ name: string; value: string; options?: Record<string, unknown> }>) => {
         toSet.forEach(({ name, value }) => request.cookies.set(name, value))
         response = NextResponse.next({ request })
-        toSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options))
+        toSet.forEach(({ name, value, options }) =>
+          response.cookies.set(name, value, options as Parameters<typeof response.cookies.set>[2]),
+        )
       },
     },
   })

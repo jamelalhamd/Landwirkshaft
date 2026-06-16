@@ -10,6 +10,7 @@ import type { Dictionary } from '@/lib/i18n/getDictionary'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { AccessibilityMenu } from './AccessibilityMenu'
 import { NavigationDrawer } from './NavigationDrawer'
+import { SearchOverlay } from './SearchOverlay'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -20,8 +21,9 @@ interface Props {
 const NAV_KEYS = ['home', 'about', 'staff', 'news', 'documents', 'research', 'gallery', 'contact'] as const
 
 export function Header({ locale, dict }: Props) {
-  const [scrolled,    setScrolled]    = useState(false)
-  const [drawerOpen,  setDrawerOpen]  = useState(false)
+  const [scrolled,     setScrolled]    = useState(false)
+  const [drawerOpen,   setDrawerOpen]  = useState(false)
+  const [searchOpen,   setSearchOpen]  = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -112,6 +114,7 @@ export function Header({ locale, dict }: Props) {
             <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
               <button
                 type="button"
+                onClick={() => setSearchOpen(true)}
                 aria-label={dict.common.search}
                 className="hidden size-9 items-center justify-center rounded-lg border border-border text-ink-muted transition-colors hover:bg-surface-muted hover:text-ink focus-visible:outline sm:inline-flex"
               >
@@ -183,6 +186,14 @@ export function Header({ locale, dict }: Props) {
       <NavigationDrawer
         open={drawerOpen}
         onClose={closeDrawer}
+        locale={locale}
+        dict={dict}
+      />
+
+      {/* ── Search Overlay ── */}
+      <SearchOverlay
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
         locale={locale}
         dict={dict}
       />

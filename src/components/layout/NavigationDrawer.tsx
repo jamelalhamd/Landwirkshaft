@@ -11,6 +11,8 @@ import {
   Atom, BookOpen, GraduationCap, Wrench, Mic,
   Leaf, FileText, Scale, Rss, MapPin, Film,
   Mail, Facebook, Youtube,
+  ScrollText, Target, Building2, Presentation, Library,
+  BarChart3, FlaskConical,
 } from 'lucide-react'
 import type { Locale } from '@/lib/i18n/config'
 import type { Dictionary } from '@/lib/i18n/getDictionary'
@@ -30,12 +32,16 @@ interface NavItem {
   Icon: LucideIcon
   badge?: string
   children?: SubItem[]
+  /** Hide on lg+ because the desktop navbar already shows this link */
+  navbarLink?: boolean
 }
 
 interface Section {
   id: string
   titleKey: keyof Dictionary['drawer']
   items: NavItem[]
+  /** Entire section is hidden on lg+ because all its links are in the desktop navbar */
+  navbarSection?: boolean
 }
 
 interface Props {
@@ -55,9 +61,11 @@ export function NavigationDrawer({ open, onClose, locale, dict }: Props) {
 
   /* Build section data */
   const sections: Section[] = [
+    /* ── Mobile-only: mirrors desktop navbar ── */
     {
       id: 'main',
       titleKey: 'mainPages',
+      navbarSection: true,
       items: [
         { labelKey: 'home',    href: `/${locale}`,         Icon: Home },
         { labelKey: 'about',   href: `/${locale}/about`,   Icon: Info },
@@ -65,11 +73,24 @@ export function NavigationDrawer({ open, onClose, locale, dict }: Props) {
         { labelKey: 'contact', href: `/${locale}/contact`, Icon: Phone },
       ],
     },
+
+    /* ── About sub-pages (not in navbar) ── */
+    {
+      id: 'about',
+      titleKey: 'aboutSection',
+      items: [
+        { labelKey: 'regulation', href: `/${locale}/about/regulation`, Icon: ScrollText },
+        { labelKey: 'strategy',   href: `/${locale}/about/strategy`,   Icon: Target },
+        { labelKey: 'structure',  href: `/${locale}/about/structure`,  Icon: Building2 },
+      ],
+    },
+
+    /* ── News & Events ── */
     {
       id: 'news',
       titleKey: 'newsEvents',
       items: [
-        { labelKey: 'news',         href: `/${locale}/news`,   Icon: Newspaper },
+        { labelKey: 'news',         href: `/${locale}/news`,   Icon: Newspaper,  navbarLink: true },
         { labelKey: 'latestTopics', href: `/${locale}/news`,   Icon: TrendingUp },
         {
           labelKey: 'events',
@@ -82,27 +103,52 @@ export function NavigationDrawer({ open, onClose, locale, dict }: Props) {
         },
       ],
     },
+
+    /* ── Scientific Activities ── */
+    {
+      id: 'scientific',
+      titleKey: 'scientificActivities',
+      items: [
+        { labelKey: 'conferences', href: `/${locale}/conferences`, Icon: Presentation },
+        { labelKey: 'lectures',    href: `/${locale}/lectures`,    Icon: Mic },
+        { labelKey: 'workshops',   href: `/${locale}/workshops`,   Icon: Wrench },
+        { labelKey: 'seminars',    href: `/${locale}/seminars`,    Icon: Users },
+      ],
+    },
+
+    /* ── Knowledge & Research ── */
     {
       id: 'knowledge',
       titleKey: 'knowledge',
       items: [
-        { labelKey: 'research',  href: `/${locale}/research`,  Icon: Atom },
-        { labelKey: 'studies',   href: `/${locale}/studies`,   Icon: BookOpen },
+        { labelKey: 'research',  href: `/${locale}/research`,  Icon: Atom,          navbarLink: true },
+        { labelKey: 'studies',   href: `/${locale}/studies`,   Icon: FlaskConical },
         { labelKey: 'training',  href: `/${locale}/training`,  Icon: GraduationCap },
-        { labelKey: 'workshops', href: `/${locale}/workshops`,  Icon: Wrench },
-        { labelKey: 'seminars',  href: `/${locale}/seminars`,  Icon: Mic },
+        {
+          labelKey: 'library',
+          href: `/${locale}/library`,
+          Icon: Library,
+          children: [
+            { labelKey: 'libraryDissertations', href: `/${locale}/library/dissertations` },
+            { labelKey: 'libraryAnnualReports', href: `/${locale}/library/annual-reports` },
+            { labelKey: 'libraryPublications',  href: `/${locale}/library/publications` },
+            { labelKey: 'libraryBulletins',     href: `/${locale}/library/bulletins` },
+          ],
+        },
       ],
     },
+
+    /* ── Services & Documents ── */
     {
       id: 'services',
       titleKey: 'servicesDocuments',
       items: [
-        { labelKey: 'varieties',    href: `/${locale}/varieties`,    Icon: Leaf },
-        { labelKey: 'documents',    href: `/${locale}/documents`,    Icon: FileText },
-        { labelKey: 'tenders',      href: `/${locale}/tenders`,      Icon: Scale },
-        { labelKey: 'newsletters',  href: `/${locale}/newsletters`,  Icon: Rss },
-        { labelKey: 'fieldDay',     href: `/${locale}/field-day`,    Icon: MapPin },
-        { labelKey: 'gallery',      href: `/${locale}/gallery`,      Icon: Film },
+        { labelKey: 'varieties',   href: `/${locale}/varieties`,   Icon: Leaf },
+        { labelKey: 'documents',   href: `/${locale}/documents`,   Icon: FileText,  navbarLink: true },
+        { labelKey: 'tenders',     href: `/${locale}/tenders`,     Icon: Scale },
+        { labelKey: 'newsletters', href: `/${locale}/newsletters`, Icon: Rss },
+        { labelKey: 'fieldDay',    href: `/${locale}/field-day`,   Icon: MapPin },
+        { labelKey: 'gallery',     href: `/${locale}/gallery`,     Icon: Film,      navbarLink: true },
       ],
     },
   ]
@@ -235,7 +281,7 @@ export function NavigationDrawer({ open, onClose, locale, dict }: Props) {
           aria-label={dict.drawer.allSections}
         >
           {sections.map((section, si) => (
-            <div key={section.id} className={cn(si > 0 && 'mt-1')}>
+            <div key={section.id} className={cn(si > 0 && 'mt-1', section.navbarSection && 'lg:hidden')}>
               {/* Section header */}
               <div className="flex items-center gap-2 px-5 pb-1 pt-3">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-secondary-500">
@@ -247,13 +293,13 @@ export function NavigationDrawer({ open, onClose, locale, dict }: Props) {
               {/* Items */}
               <ul role="list">
                 {section.items.map((item) => {
-                  const active    = isActive(item.href)
+                  const active      = isActive(item.href)
                   const hasChildren = !!item.children?.length
                   const isExpanded  = expanded.has(`${section.id}-${item.labelKey}`)
                   const expandId    = `${section.id}-${item.labelKey}`
 
                   return (
-                    <li key={item.labelKey}>
+                    <li key={item.labelKey} className={cn(item.navbarLink && 'lg:hidden')}>
                       {hasChildren ? (
                         /* Collapsible trigger */
                         <>
@@ -361,23 +407,23 @@ export function NavigationDrawer({ open, onClose, locale, dict }: Props) {
             <ul className="space-y-1.5">
               <li>
                 <a
-                  href="tel:+96311XXXXXXX"
+                  href="tel:+963112216901"
                   tabIndex={open ? 0 : -1}
                   className="flex items-center gap-2 text-xs text-ink-muted hover:text-primary-700 transition-colors"
                   dir="ltr"
                 >
                   <Phone className="size-3.5 shrink-0 text-secondary-500" aria-hidden />
-                  +963 11 XXX XXXX
+                  +963 11 2216901
                 </a>
               </li>
               <li>
                 <a
-                  href="mailto:info@gcsar.gov.sy"
+                  href="mailto:information@gcsar.gov.sy"
                   tabIndex={open ? 0 : -1}
                   className="flex items-center gap-2 text-xs text-ink-muted hover:text-primary-700 transition-colors"
                 >
                   <Mail className="size-3.5 shrink-0 text-secondary-500" aria-hidden />
-                  info@gcsar.gov.sy
+                  information@gcsar.gov.sy
                 </a>
               </li>
             </ul>
@@ -385,8 +431,8 @@ export function NavigationDrawer({ open, onClose, locale, dict }: Props) {
             {/* Social */}
             <div className="mt-2.5 flex gap-2">
               {[
-                { Icon: Facebook, label: 'Facebook', href: 'https://facebook.com/' },
-                { Icon: Youtube,  label: 'YouTube',  href: 'https://youtube.com/'  },
+                { Icon: Facebook, label: 'Facebook', href: 'https://www.facebook.com/gcsarsy/' },
+                { Icon: Youtube,  label: 'YouTube',  href: 'https://youtube.com/' },
               ].map(({ Icon, label, href }) => (
                 <a
                   key={label}

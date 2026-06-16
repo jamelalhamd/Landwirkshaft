@@ -16,7 +16,7 @@ const NAV_LINKS = [
 const SOCIAL = [
   {
     label: 'Facebook',
-    href: 'https://facebook.com/',
+    href: 'https://www.facebook.com/gcsarsy/',
     Icon: Facebook,
   },
   {
@@ -119,20 +119,20 @@ export function Footer({ locale, dict }: Props) {
             <li className="flex items-center gap-3">
               <Phone className="size-4 shrink-0 text-secondary-500" aria-hidden />
               <a
-                href="tel:+96311XXXXXXX"
+                href="tel:+963112216901"
                 className="text-sm text-slate-400 transition-colors hover:text-white"
                 dir="ltr"
               >
-                +963 11 XXX XXXX
+                +963 11 2216901
               </a>
             </li>
             <li className="flex items-center gap-3">
               <Mail className="size-4 shrink-0 text-secondary-500" aria-hidden />
               <a
-                href="mailto:info@gcsar.gov.sy"
+                href="mailto:information@gcsar.gov.sy"
                 className="text-sm text-slate-400 transition-colors hover:text-white"
               >
-                info@gcsar.gov.sy
+                information@gcsar.gov.sy
               </a>
             </li>
           </ul>

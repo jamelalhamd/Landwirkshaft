@@ -1,47 +1,41 @@
 import 'server-only'
-import type { Profile, UserRole } from '@/lib/supabase/types'
+import { cookies } from 'next/headers'
+import { type SessionInfo, type UserRole, ROLE_RANK } from '@/lib/auth/types'
 
-export interface SessionInfo {
-  authenticated: boolean
-  profile: Profile | null
-  roleAtLeast: (role: UserRole) => boolean
+export type { SessionInfo }
+
+const noSession: SessionInfo = {
+  authenticated: false,
+  profile: null,
+  roleAtLeast: () => false,
 }
 
-const ROLE_RANK: Record<UserRole, number> = {
-  viewer: 1,
-  editor: 2,
-  admin: 3,
-  super_admin: 4,
-}
-
-/**
- * Server-side session helper. Returns a minimal SessionInfo so admin pages
- * can guard themselves without each importing Supabase directly.
- *
- * When NEXT_PUBLIC_DATA_SOURCE=mock, returns an unauthenticated session so
- * the admin route shows the login screen instead of crashing.
- */
 export async function getSession(): Promise<SessionInfo> {
-  const noSession: SessionInfo = {
-    authenticated: false,
-    profile: null,
-    roleAtLeast: () => false,
-  }
+  const cookieStore = await cookies()
+  const sessionCookie = cookieStore.get('__session')?.value
+  if (!sessionCookie) return noSession
 
-  if (process.env.NEXT_PUBLIC_DATA_SOURCE !== 'supabase') return noSession
+  try {
+    const { adminAuth, adminDb } = await import('@/lib/firebase/admin')
 
-  const { createSupabaseServerClient } = await import('@/lib/supabase/server')
-  const sb = await createSupabaseServerClient()
-  const { data: userData } = await sb.auth.getUser()
-  const user = userData.user
-  if (!user) return noSession
+    // checkRevoked: true ensures logged-out sessions are rejected
+    const decoded = await adminAuth().verifySessionCookie(sessionCookie, true)
 
-  const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle<Profile>()
-  if (!profile) return noSession
+    const userDoc = await adminDb().collection('users').doc(decoded.uid).get()
+    const role: UserRole = (userDoc.data()?.role as UserRole) ?? 'viewer'
 
-  return {
-    authenticated: true,
-    profile,
-    roleAtLeast: (needed) => ROLE_RANK[profile.role] >= ROLE_RANK[needed],
+    return {
+      authenticated: true,
+      profile: {
+        uid: decoded.uid,
+        email: decoded.email ?? '',
+        displayName: (userDoc.data()?.displayName as string | undefined) ?? decoded.name ?? '',
+        role,
+      },
+      roleAtLeast: (needed) => ROLE_RANK[role] >= ROLE_RANK[needed],
+    }
+  } catch {
+    // Expired, revoked, or tampered cookie
+    return noSession
   }
 }

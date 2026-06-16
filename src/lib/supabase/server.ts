@@ -12,9 +12,9 @@ export async function createSupabaseServerClient() {
   return createServerClient(url, key, {
     cookies: {
       getAll: () => cookieStore.getAll(),
-      setAll: (toSet) => {
+      setAll: (toSet: Array<{ name: string; value: string; options?: Record<string, unknown> }>) => {
         try {
-          toSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
+          toSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options as Parameters<typeof cookieStore.set>[2]))
         } catch {
           // server component context — set during middleware instead
         }

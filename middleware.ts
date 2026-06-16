@@ -6,7 +6,10 @@ function getLocale(request: NextRequest): string {
   const acceptLanguage = request.headers.get('accept-language') ?? ''
   const preferred = acceptLanguage
     .split(',')
-    .map((seg) => seg.split(';')[0].trim().toLowerCase().split('-')[0])
+    .map((seg) => {
+      const part = seg.split(';')[0] ?? ''
+      return part.trim().toLowerCase().split('-')[0] ?? ''
+    })
   for (const lang of preferred) {
     if ((i18n.locales as readonly string[]).includes(lang)) return lang
   }
@@ -33,6 +36,14 @@ export function middleware(request: NextRequest) {
   if (hasLocale) {
     const locale = pathname.split('/')[1]
     if (locale && isLocale(locale)) {
+      // Guard admin routes — full cookie verification happens server-side in getSession()
+      const isAdminPath = pathname.startsWith(`/${locale}/admin`)
+      if (isAdminPath && !request.cookies.get('__session')?.value) {
+        const url = request.nextUrl.clone()
+        url.pathname = `/${locale}/login`
+        return NextResponse.redirect(url)
+      }
+
       const response = NextResponse.next()
       response.cookies.set('NEXT_LOCALE', locale, { path: '/', maxAge: 60 * 60 * 24 * 365 })
       return response

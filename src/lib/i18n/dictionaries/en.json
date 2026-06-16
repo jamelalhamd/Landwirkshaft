@@ -17,7 +17,7 @@
     "theme": "Theme",
     "themeLight": "Light",
     "themeDark": "Dark",
-    "accessibility": "Accessibility",
+    "accessibility": "Customize",
     "increaseFont": "Increase font",
     "decreaseFont": "Decrease font",
     "resetFont": "Reset font",
@@ -25,7 +25,15 @@
     "readAloud": "Read aloud",
     "officialBadge": "Official site",
     "publishedOn": "Published on",
-    "category": "Category"
+    "category": "Category",
+    "searchPlaceholder": "Search the site...",
+    "searchResults": "Search Results",
+    "searchResultsFor": "Results for:",
+    "searchNoResults": "No matching results found",
+    "searchTypeNews": "News",
+    "searchTypeStaff": "Staff",
+    "searchTypeDocuments": "Documents",
+    "searchTypeResearch": "Research"
   },
   "nav": {
     "home": "Home",
@@ -46,18 +54,31 @@
     "newsletters": "Newsletters",
     "workshops": "Workshops",
     "fieldDay": "Field Day",
-    "latestTopics": "Latest Topics"
+    "latestTopics": "Latest Topics",
+    "conferences": "Scientific Conferences",
+    "lectures": "Lectures",
+    "library": "Digital Library",
+    "regulation": "Founding Decree",
+    "strategy": "Strategy & Vision",
+    "structure": "Organizational Structure"
   },
   "drawer": {
     "allSections": "All Sections",
     "mainPages": "Main Pages",
+    "aboutSection": "About the Commission",
     "newsEvents": "News & Events",
+    "scientificActivities": "Scientific Activities",
     "knowledge": "Knowledge & Training",
     "servicesDocuments": "Services & Documents",
+    "librarySection": "Library & Publications",
     "upcomingEvents": "Upcoming Events",
     "pastEvents": "Past Events",
     "searchPlaceholder": "Search the site...",
-    "quickContact": "Quick Contact"
+    "quickContact": "Quick Contact",
+    "libraryDissertations": "PhD & MSc Dissertations",
+    "libraryAnnualReports": "Annual Reports",
+    "libraryPublications": "Scientific Publications",
+    "libraryBulletins": "Extension Bulletins"
   },
   "home": {
     "hero": {
@@ -100,20 +121,22 @@
     }
   },
   "footer": {
-    "about": "The General Commission for Scientific Agricultural Research is a government institution dedicated to developing the agricultural sector of the Syrian Arab Republic.",
+    "about": "The General Commission for Scientific Agricultural Research is a government institution established by Law No. 42 of 2001 to develop the agricultural sector of the Syrian Arab Republic.",
     "quickLinks": "Quick Links",
     "contactUs": "Contact Us",
-    "address": "Address: Douma, Damascus Countryside, Syrian Arab Republic",
+    "address": "Halbouni St., Libraries District, Damascus, Syrian Arab Republic",
     "workingHours": "Working hours: Sun–Thu, 8:30 AM – 3:30 PM",
     "phone": "Phone",
+    "fax": "Fax",
     "email": "Email",
+    "poBox": "P.O. Box",
     "follow": "Follow us",
     "rights": "All rights reserved",
     "privacy": "Privacy Policy",
     "terms": "Terms of Use"
   },
   "accessibility": {
-    "title": "Accessibility options",
+    "title": "Customize",
     "fontSize": "Font size",
     "contrast": "Contrast",
     "motion": "Reduce motion",

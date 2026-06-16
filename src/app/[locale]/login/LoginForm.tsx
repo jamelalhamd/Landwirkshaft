@@ -2,9 +2,29 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createSupabaseBrowserClient } from '@/lib/supabase/client'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { FirebaseError } from 'firebase/app'
+import { clientAuth } from '@/lib/firebase/client'
 import type { Locale } from '@/lib/i18n/config'
 import type { Dictionary } from '@/lib/i18n/getDictionary'
+
+function localiseFirebaseError(code: string, locale: Locale): string {
+  const map: Record<string, { ar: string; en: string }> = {
+    'auth/invalid-credential': {
+      ar: 'البريد الإلكتروني أو كلمة المرور غير صحيحة.',
+      en: 'Incorrect email or password.',
+    },
+    'auth/user-disabled': {
+      ar: 'هذا الحساب معطّل. تواصل مع المسؤول.',
+      en: 'This account has been disabled. Contact the administrator.',
+    },
+    'auth/too-many-requests': {
+      ar: 'محاولات كثيرة. حاول مجدداً بعد قليل.',
+      en: 'Too many attempts. Please try again later.',
+    },
+  }
+  return map[code]?.[locale] ?? (locale === 'ar' ? 'حدث خطأ. حاول مجدداً.' : 'An error occurred. Please try again.')
+}
 
 export function LoginForm({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const router = useRouter()
@@ -17,17 +37,26 @@ export function LoginForm({ locale, dict }: { locale: Locale; dict: Dictionary }
     e.preventDefault()
     setError(null)
     setBusy(true)
+
     try {
-      const sb = createSupabaseBrowserClient()
-      const { error: err } = await sb.auth.signInWithPassword({ email, password })
-      if (err) {
-        setError(err.message)
-        return
-      }
+      const { user } = await signInWithEmailAndPassword(clientAuth, email, password)
+      const idToken = await user.getIdToken()
+
+      const res = await fetch('/api/auth/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      })
+      if (!res.ok) throw new Error(locale === 'ar' ? 'فشل إنشاء الجلسة.' : 'Session creation failed.')
+
       router.push(`/${locale}/admin`)
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err))
+      if (err instanceof FirebaseError) {
+        setError(localiseFirebaseError(err.code, locale))
+      } else {
+        setError(err instanceof Error ? err.message : String(err))
+      }
     } finally {
       setBusy(false)
     }

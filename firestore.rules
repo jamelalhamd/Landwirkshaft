@@ -1,0 +1,123 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Helpers ──────────────────────────────────────────────────────────────
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function role() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isAtLeast(minRole) {
+      let ranks = { viewer: 1, editor: 2, admin: 3, super_admin: 4 };
+      return isSignedIn() && ranks[role()] >= ranks[minRole];
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // ── Users ─────────────────────────────────────────────────────────────────
+    // Admins see all users; users see & edit only their own profile.
+    // Role changes require super_admin.
+
+    match /users/{uid} {
+      allow read: if isOwner(uid) || isAtLeast('admin');
+
+      // Create: only the session API route (admin SDK) — deny from client
+      allow create: if false;
+
+      // Update own profile (displayName only); role changes require super_admin
+      allow update: if isOwner(uid)
+                      && !('role' in request.resource.data.diff(resource.data).affectedKeys())
+                    || isAtLeast('super_admin');
+
+      allow delete: if isAtLeast('super_admin');
+    }
+
+    // ── News articles ─────────────────────────────────────────────────────────
+
+    match /news/{articleId} {
+      allow read: if resource.data.status == 'published'
+                  || isAtLeast('editor');
+
+      allow create: if isAtLeast('editor')
+                    && request.resource.data.status in ['draft', 'review'];
+
+      allow update: if isAtLeast('editor')
+                    // Only admin+ may publish or archive
+                    && (request.resource.data.status in ['draft', 'review']
+                        || isAtLeast('admin'));
+
+      allow delete: if isAtLeast('admin');
+    }
+
+    // ── Official documents ────────────────────────────────────────────────────
+
+    match /documents/{docId} {
+      allow read: if resource.data.status == 'published'
+                  || isAtLeast('editor');
+      allow create, update: if isAtLeast('editor');
+      allow delete: if isAtLeast('admin');
+    }
+
+    // ── Research papers ───────────────────────────────────────────────────────
+
+    match /research/{paperId} {
+      allow read: if resource.data.status == 'published'
+                  || isAtLeast('editor');
+      allow create, update: if isAtLeast('editor');
+      allow delete: if isAtLeast('admin');
+    }
+
+    // ── Staff members ─────────────────────────────────────────────────────────
+
+    match /staff/{memberId} {
+      allow read: if resource.data.is_active == true || isAtLeast('editor');
+      allow create, update: if isAtLeast('admin');
+      allow delete: if isAtLeast('admin');
+    }
+
+    // ── Gallery / media ───────────────────────────────────────────────────────
+
+    match /media/{itemId} {
+      allow read: if true;
+      allow create, update: if isAtLeast('admin');
+      allow delete: if isAtLeast('admin');
+    }
+
+    // ── Contact messages ──────────────────────────────────────────────────────
+    // Anyone can submit; only admins can read the inbox.
+
+    match /contact_messages/{msgId} {
+      allow create: if true;
+      allow read, update: if isAtLeast('admin');
+      allow delete: if isAtLeast('super_admin');
+    }
+
+    // ── Audit logs — append-only ──────────────────────────────────────────────
+
+    match /audit_logs/{logId} {
+      allow read: if isAtLeast('super_admin');
+      allow create: if isAtLeast('editor');
+      allow update, delete: if false;
+    }
+
+    // ── Site statistics (public read, admin write) ────────────────────────────
+
+    match /site_stats/{key} {
+      allow read: if true;
+      allow write: if isAtLeast('admin');
+    }
+
+    // Deny everything else by default
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
