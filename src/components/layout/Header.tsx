@@ -81,13 +81,13 @@ export function Header({ locale, dict }: Props) {
             >
               <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
                 <Image
-                  src="/logos/syria-eagle.svg"
+                  src="/logos/idsyria.jpg"
                   alt={dict.meta.country}
-                  width={52}
-                  height={52}
+                  width={64}
+                  height={64}
                   priority
-                  className="drop-shadow-sm transition-transform duration-300 group-hover:scale-105"
-                  style={{ width: 52, height: 52 }}
+                  className="rounded-full object-cover ring-2 ring-primary-200 drop-shadow-sm transition-transform duration-300 group-hover:scale-105"
+                  style={{ width: 64, height: 64 }}
                 />
                 <div className="hidden h-10 w-px bg-border/60 sm:block" aria-hidden />
                 <Image
@@ -121,7 +121,7 @@ export function Header({ locale, dict }: Props) {
                 <Search className="size-4" aria-hidden />
               </button>
               <LanguageSwitcher currentLocale={locale} label={dict.common.language} />
-              <AccessibilityMenu dict={dict} />
+              <AccessibilityMenu dict={dict} locale={locale} />
 
               {/* Mobile hamburger → opens comprehensive drawer */}
               <button

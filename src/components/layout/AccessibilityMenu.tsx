@@ -1,12 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { Sun, Moon, Type, Contrast, Pause, Settings2 } from 'lucide-react'
+import { Sun, Moon, Type, Contrast, Pause, Settings2, LayoutDashboard } from 'lucide-react'
+import Link from 'next/link'
 import { useA11y } from './AccessibilityProvider'
 import type { Dictionary } from '@/lib/i18n/getDictionary'
+import type { Locale } from '@/lib/i18n/config'
 import { cn } from '@/lib/utils'
 
-export function AccessibilityMenu({ dict }: { dict: Dictionary }) {
+export function AccessibilityMenu({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const [open, setOpen] = useState(false)
   const { theme, toggleTheme, fontScale, setFontScale, highContrast, toggleHighContrast, reduceMotion, toggleReduceMotion } = useA11y()
 
@@ -141,6 +143,18 @@ export function AccessibilityMenu({ dict }: { dict: Dictionary }) {
               </span>
               <span className="text-xs opacity-80">{reduceMotion ? '●' : '○'}</span>
             </button>
+
+            {/* Admin link */}
+            <div className="mt-3 border-t border-border pt-3">
+              <Link
+                href={`/${locale}/admin`}
+                onClick={() => setOpen(false)}
+                className="flex w-full items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-fluid-sm font-medium text-ink-muted transition-all hover:border-primary-700 hover:bg-primary-50 hover:text-primary-700 dark:hover:bg-primary-900/30"
+              >
+                <LayoutDashboard className="size-4 shrink-0" aria-hidden />
+                {dict.nav.admin}
+              </Link>
+            </div>
           </div>
         </>
       )}
