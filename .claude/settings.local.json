@@ -15,7 +15,15 @@
       "Bash(powershell *)",
       "Bash(npx tsc *)",
       "Bash(npm install *)",
-      "WebFetch(domain:gcsar.gov.sy)"
+      "WebFetch(domain:gcsar.gov.sy)",
+      "Skill(update-config)",
+      "Bash(Get-ChildItem -Path . -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\\\\src\\\\app\\\\api\\\\storage\\\\upload\")",
+      "Bash(Out-Null)",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\\\\src\\\\app\\\\api\\\\storage\\\\files\")",
+      "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\\\\src\\\\app\\\\api\\\\storage\\\\delete\")",
+      "Bash(Write-Host \"Directories created\")"
     ]
   }
 }

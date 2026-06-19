@@ -2,6 +2,7 @@ import 'server-only'
 import { cert, getApp, getApps, initializeApp, type App } from 'firebase-admin/app'
 import { getAuth } from 'firebase-admin/auth'
 import { getFirestore } from 'firebase-admin/firestore'
+import { getStorage } from 'firebase-admin/storage'
 
 function getAdminApp(): App {
   if (getApps().length > 0) return getApp()
@@ -17,3 +18,8 @@ function getAdminApp(): App {
 
 export const adminAuth = () => getAuth(getAdminApp())
 export const adminDb = () => getFirestore(getAdminApp())
+export const adminStorage = () => {
+  const bucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
+  if (!bucket) throw new Error('NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET is not set')
+  return getStorage(getAdminApp()).bucket(bucket)
+}
