@@ -4,6 +4,7 @@ import { isLocale } from '@/lib/i18n/config'
 import { getSession } from '@/lib/auth/getSession'
 import { AdminSidebar } from '@/components/admin/AdminSidebar'
 import { LogoutButton } from '@/components/admin/LogoutButton'
+import { InactivityGuard } from '@/components/auth/InactivityGuard'
 
 export default async function AdminLayout({
   children,
@@ -50,6 +51,8 @@ export default async function AdminLayout({
 
   return (
     <div className="flex">
+      {/* Auto-logout after 10 min inactivity + periodic session poll */}
+      <InactivityGuard locale={locale} />
       <AdminSidebar locale={locale} role={profile!.role} />
 
       <div className="min-w-0 flex-1">

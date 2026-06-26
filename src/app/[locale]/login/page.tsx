@@ -7,8 +7,10 @@ import { LoginForm } from './LoginForm'
 
 export default async function LoginPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams: Promise<{ reason?: string }>
 }) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
@@ -19,6 +21,9 @@ export default async function LoginPage({
 
   const dict = await getDictionary(locale)
   const firebaseConfigured = !!process.env.NEXT_PUBLIC_FIREBASE_API_KEY
+  const { reason } = await searchParams
+
+  const timeoutBanner = reason === 'timeout' || reason === 'expired'
 
   return (
     <section className="gov-section">
@@ -33,6 +38,19 @@ export default async function LoginPage({
           <p className="mt-1 text-fluid-sm text-ink-muted">
             {locale === 'ar' ? 'مخصص للموظفين المعتمدين فقط.' : 'Authorized staff only.'}
           </p>
+
+          {/* Session timeout / expiry notice */}
+          {timeoutBanner && (
+            <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-fluid-sm text-amber-800">
+              {reason === 'timeout'
+                ? (locale === 'ar'
+                  ? 'انتهت جلستك بسبب عدم النشاط لمدة 10 دقائق. يرجى تسجيل الدخول مجدداً.'
+                  : 'Your session expired after 10 minutes of inactivity. Please sign in again.')
+                : (locale === 'ar'
+                  ? 'انتهت صلاحية جلستك. يرجى تسجيل الدخول مجدداً.'
+                  : 'Your session has expired. Please sign in again.')}
+            </div>
+          )}
 
           {firebaseConfigured ? (
             <LoginForm locale={locale} dict={dict} />

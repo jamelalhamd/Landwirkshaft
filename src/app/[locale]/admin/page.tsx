@@ -8,6 +8,7 @@ import {
   ImageIcon,
   MessageSquare,
   FolderOpen,
+  DatabaseZap,
 } from 'lucide-react'
 import { isLocale } from '@/lib/i18n/config'
 import { getDictionary } from '@/lib/i18n/getDictionary'
@@ -19,7 +20,8 @@ const SECTIONS = [
   { slug: 'research',  icon: BookOpen,       labelKey: 'research'     as const },
   { slug: 'gallery',   icon: ImageIcon,      labelKey: 'gallery'      as const },
   { slug: 'staff',     icon: Users,          labelKey: 'staff'        as const },
-  { slug: 'contact',   icon: MessageSquare,  labelKey: 'contact'      as const },
+  { slug: 'contact',    icon: MessageSquare,  labelKey: 'contact'      as const },
+  { slug: 'prometheus', icon: DatabaseZap,    labelKey: 'prometheus'   as const },
 ] as const
 
 const LABELS: Record<string, { ar: string; en: string }> = {
@@ -30,6 +32,7 @@ const LABELS: Record<string, { ar: string; en: string }> = {
   gallery:      { ar: 'معرض الوسائط',        en: 'Gallery'         },
   staff:        { ar: 'دليل الموظفين',       en: 'Staff'           },
   contact:      { ar: 'الرسائل الواردة',     en: 'Messages'        },
+  prometheus:   { ar: 'استيراد Prometheus', en: 'Prometheus Sync'  },
 }
 
 export default async function AdminDashboard({

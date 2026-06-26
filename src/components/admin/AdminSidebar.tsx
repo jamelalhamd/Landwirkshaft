@@ -11,6 +11,7 @@ import {
   ImageIcon,
   MessageSquare,
   FolderOpen,
+  DatabaseZap,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { Locale } from '@/lib/i18n/config'
@@ -78,6 +79,13 @@ const NAV_ITEMS = [
     icon: MessageSquare,
     ar: 'الرسائل',
     en: 'Messages',
+    minRole: 'admin' as UserRole,
+  },
+  {
+    slug: 'prometheus',
+    icon: DatabaseZap,
+    ar: 'استيراد Prometheus',
+    en: 'Prometheus Sync',
     minRole: 'admin' as UserRole,
   },
 ]

@@ -4,13 +4,15 @@ import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { ShieldCheck, Search, Menu } from 'lucide-react'
+import { ShieldCheck, Search, Menu, LayoutDashboard, LogIn, Clock3 } from 'lucide-react'
 import type { Locale } from '@/lib/i18n/config'
 import type { Dictionary } from '@/lib/i18n/getDictionary'
 import { LanguageSwitcher } from './LanguageSwitcher'
 import { AccessibilityMenu } from './AccessibilityMenu'
 import { NavigationDrawer } from './NavigationDrawer'
 import { SearchOverlay } from './SearchOverlay'
+import { LiveClock } from './LiveClock'
+import { useClientSession } from '@/lib/hooks/useClientSession'
 import { cn } from '@/lib/utils'
 
 interface Props {
@@ -25,6 +27,7 @@ export function Header({ locale, dict }: Props) {
   const [drawerOpen,   setDrawerOpen]  = useState(false)
   const [searchOpen,   setSearchOpen]  = useState(false)
   const pathname = usePathname()
+  const session  = useClientSession()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -61,12 +64,31 @@ export function Header({ locale, dict }: Props) {
               <span className="text-white/25 hidden sm:inline">·</span>
               <span className="text-white/55 hidden sm:inline">{dict.meta.country}</span>
             </div>
-            <Link
-              href={`/${locale}/admin`}
-              className="text-[11px] font-medium text-white/55 transition-colors hover:text-secondary-400"
-            >
-              {dict.nav.admin}
-            </Link>
+            {/* Auth strip — login link OR user name + live clock */}
+            {!session.loading && (
+              session.authenticated ? (
+                <Link
+                  href={`/${locale}/admin`}
+                  className="flex items-center gap-2 text-[11px] font-medium text-white/80 transition-colors hover:text-secondary-400"
+                >
+                  <LayoutDashboard className="size-3 shrink-0" aria-hidden />
+                  <span className="max-w-[140px] truncate">{session.displayName}</span>
+                  <span className="text-white/30" aria-hidden>·</span>
+                  <Clock3 className="size-3 shrink-0 text-secondary-400" aria-hidden />
+                  <span className="text-secondary-300">
+                    <LiveClock locale={locale} />
+                  </span>
+                </Link>
+              ) : (
+                <Link
+                  href={`/${locale}/login`}
+                  className="flex items-center gap-1.5 text-[11px] font-medium text-white/55 transition-colors hover:text-secondary-400"
+                >
+                  <LogIn className="size-3 shrink-0" aria-hidden />
+                  {locale === 'ar' ? 'دخول المنظومة' : 'Staff login'}
+                </Link>
+              )
+            )}
           </div>
         </div>
 
@@ -122,6 +144,24 @@ export function Header({ locale, dict }: Props) {
               </button>
               <LanguageSwitcher currentLocale={locale} label={dict.common.language} />
               <AccessibilityMenu dict={dict} locale={locale} />
+
+              {/* Admin / login icon — visible on all screen sizes */}
+              {!session.loading && (
+                <Link
+                  href={session.authenticated ? `/${locale}/admin` : `/${locale}/login`}
+                  aria-label={session.authenticated ? dict.nav.admin : (locale === 'ar' ? 'تسجيل الدخول' : 'Sign in')}
+                  className={cn(
+                    'inline-flex size-9 items-center justify-center rounded-lg border transition-colors focus-visible:outline',
+                    session.authenticated
+                      ? 'border-primary-200 bg-primary-50 text-primary-700 hover:bg-primary-100'
+                      : 'border-border text-ink-muted hover:bg-surface-muted hover:text-ink',
+                  )}
+                >
+                  {session.authenticated
+                    ? <LayoutDashboard className="size-4" aria-hidden />
+                    : <LogIn className="size-4" aria-hidden />}
+                </Link>
+              )}
 
               {/* Mobile hamburger → opens comprehensive drawer */}
               <button

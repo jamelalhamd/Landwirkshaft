@@ -33,7 +33,10 @@ let cached: ContentRepository | null = null
 
 export async function getRepository(): Promise<ContentRepository> {
   if (cached) return cached
-  if (source === 'supabase') {
+  if (source === 'firebase') {
+    const mod = await import('./firebase-repository')
+    cached = mod.firebaseRepository
+  } else if (source === 'supabase') {
     const mod = await import('./supabase-repository')
     cached = mod.supabaseRepository
   } else {
