@@ -33,7 +33,7 @@ export function Footer({ locale, dict }: Props) {
     <footer className="mt-16 bg-primary-950 text-slate-300">
       {/* Decorative accent border */}
       <div
-        className="h-1 bg-gradient-to-r from-primary-700 via-secondary-500 to-primary-700"
+        className="h-1.5 bg-gradient-to-r from-secondary-800 via-secondary-500 to-secondary-800"
         aria-hidden
       />
 
@@ -56,11 +56,11 @@ export function Footer({ locale, dict }: Props) {
             />
             <div className="h-12 w-px bg-white/15" aria-hidden />
             <Image
-              src="/logos/gcsar-logo.svg"
+              src="/logos/logo2.png"
               alt=""
               width={48}
-              height={48}
-              style={{ width: 48, height: 48 }}
+              height={50}
+              style={{ width: 48, height: 50 }}
               className="transition-transform duration-300 group-hover:scale-105"
             />
           </Link>
@@ -150,7 +150,7 @@ export function Footer({ locale, dict }: Props) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="inline-flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-slate-400 transition-all duration-200 hover:border-secondary-500 hover:bg-secondary-600 hover:text-white focus-visible:outline focus-visible:outline-secondary-400"
+                  className="inline-flex size-9 items-center justify-center rounded-lg border border-white/10 bg-white/5 text-slate-400 transition-all duration-200 hover:border-secondary-500 hover:bg-secondary-700 hover:text-white focus-visible:outline focus-visible:outline-secondary-400"
                 >
                   <Icon className="size-4" aria-hidden />
                 </a>

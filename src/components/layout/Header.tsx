@@ -14,15 +14,26 @@ import { SearchOverlay } from './SearchOverlay'
 import { LiveClock } from './LiveClock'
 import { useClientSession } from '@/lib/hooks/useClientSession'
 import { cn } from '@/lib/utils'
+import type { SiteSettings } from '@/lib/data/getSiteSettings'
 
 interface Props {
   locale: Locale
   dict: Dictionary
+  siteSettings?: SiteSettings
 }
 
 const NAV_KEYS = ['home', 'about', 'staff', 'news', 'documents', 'research', 'gallery', 'contact'] as const
 
-export function Header({ locale, dict }: Props) {
+export function Header({ locale, dict, siteSettings }: Props) {
+  const isAr = locale === 'ar'
+  const siteName = isAr
+    ? (siteSettings?.site_name_ar ?? dict.meta.siteName)
+    : (siteSettings?.site_name_en ?? dict.meta.siteName)
+  const tagline = isAr
+    ? (siteSettings?.tagline_ar ?? dict.meta.tagline)
+    : (siteSettings?.tagline_en ?? dict.meta.tagline)
+  const logo1 = siteSettings?.logo_url ?? '/logos/idsyria.jpg'
+  const logo2 = siteSettings?.logo2_url ?? '/logos/logo2.png'
   const [scrolled,     setScrolled]    = useState(false)
   const [drawerOpen,   setDrawerOpen]  = useState(false)
   const [searchOpen,   setSearchOpen]  = useState(false)
@@ -59,7 +70,7 @@ export function Header({ locale, dict }: Props) {
         <div className="bg-primary-950">
           <div className="container flex h-9 items-center justify-between gap-4">
             <div className="flex items-center gap-2 text-xs">
-              <ShieldCheck className="size-3.5 shrink-0 text-secondary-400" aria-hidden />
+              <ShieldCheck className="size-3.5 shrink-0 text-secondary-400/90" aria-hidden />
               <span className="font-semibold text-white/90">{dict.common.officialBadge}</span>
               <span className="text-white/25 hidden sm:inline">·</span>
               <span className="text-white/55 hidden sm:inline">{dict.meta.country}</span>
@@ -69,7 +80,7 @@ export function Header({ locale, dict }: Props) {
               session.authenticated ? (
                 <Link
                   href={`/${locale}/admin`}
-                  className="flex items-center gap-2 text-[11px] font-medium text-white/80 transition-colors hover:text-secondary-400"
+                  className="flex items-center gap-2 text-[11px] font-medium text-white/80 transition-colors hover:text-secondary-300"
                 >
                   <LayoutDashboard className="size-3 shrink-0" aria-hidden />
                   <span className="max-w-[140px] truncate">{session.displayName}</span>
@@ -103,31 +114,33 @@ export function Header({ locale, dict }: Props) {
             >
               <div className="flex shrink-0 items-center gap-2.5 sm:gap-3">
                 <Image
-                  src="/logos/idsyria.jpg"
+                  src={logo1}
                   alt={dict.meta.country}
                   width={64}
                   height={64}
                   priority
+                  unoptimized={logo1.startsWith('https://firebasestorage')}
                   className="rounded-full object-cover ring-2 ring-primary-200 drop-shadow-sm transition-transform duration-300 group-hover:scale-105"
                   style={{ width: 64, height: 64 }}
                 />
                 <div className="hidden h-10 w-px bg-border/60 sm:block" aria-hidden />
                 <Image
-                  src="/logos/logo2.png"
+                  src={logo2}
                   alt=""
                   width={56}
-                  height={56}
+                  height={58}
+                  unoptimized={logo2.startsWith('https://firebasestorage') || logo2.endsWith('.svg')}
                   className="object-contain transition-transform duration-300 group-hover:scale-105"
-                  style={{ width: 56, height: 56 }}
+                  style={{ width: 56, height: 58 }}
                 />
               </div>
 
               <div className="hidden min-w-0 leading-tight sm:block">
                 <span className="block truncate text-sm font-bold text-primary-900 dark:text-white sm:text-base">
-                  {dict.meta.siteName}
+                  {siteName}
                 </span>
                 <span className="block text-[11px] text-ink-subtle sm:text-xs">
-                  {dict.meta.tagline}
+                  {tagline}
                 </span>
               </div>
             </Link>
@@ -194,9 +207,9 @@ export function Header({ locale, dict }: Props) {
                   aria-current={active ? 'page' : undefined}
                   className={cn(
                     'block border-b-2 px-4 py-3.5 text-[13px] font-medium transition-all duration-200',
-                    'hover:bg-primary-800/60 hover:text-white hover:border-secondary-400',
+                    'hover:bg-primary-800/60 hover:text-white hover:border-secondary-500',
                     active
-                      ? 'border-secondary-400 bg-primary-800/70 font-semibold text-white'
+                      ? 'border-secondary-500 bg-primary-800/70 font-semibold text-white'
                       : 'border-transparent text-white/80',
                   )}
                 >

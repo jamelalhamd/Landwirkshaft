@@ -26,17 +26,17 @@ const config: Config = {
           950: '#0a1d3a',
         },
         secondary: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a', // Brand secondary
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
-          950: '#052e16',
+          50: '#fdf8f0',
+          100: '#f9f0dc',
+          200: '#e8d9bc',
+          300: '#d8c09b',
+          400: '#cbb088',
+          500: '#bca475', // mofaex gold — brand accent
+          600: '#a0885e',
+          700: '#836c49',
+          800: '#624f35',
+          900: '#3f3222',
+          950: '#231b0d',
         },
         surface: {
           DEFAULT: 'rgb(var(--surface) / <alpha-value>)',

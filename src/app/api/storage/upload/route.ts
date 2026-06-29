@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth/getSession'
 import { uploadFile } from '@/lib/firebase/storage-utils'
 
-const ALLOWED_FOLDERS = new Set(['news', 'staff', 'documents', 'research', 'media', 'attachments'])
+const ALLOWED_FOLDERS = new Set(['news', 'staff', 'documents', 'research', 'media', 'attachments', 'logos'])
 
 export async function POST(request: Request) {
   const session = await getSession()

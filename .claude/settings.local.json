@@ -23,7 +23,13 @@
       "Bash(Out-Null)",
       "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\\\\src\\\\app\\\\api\\\\storage\\\\files\")",
       "Bash(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\\\\src\\\\app\\\\api\\\\storage\\\\delete\")",
-      "Bash(Write-Host \"Directories created\")"
+      "Bash(Write-Host \"Directories created\")",
+      "PowerShell(Start-Sleep -Seconds 3; Invoke-RestMethod -Uri \"http://localhost:3000/api/prometheus/sync\" -Method POST -ContentType \"application/json\" -Body \"{}\" 2>&1 | ConvertTo-Json -Depth 3 -ErrorAction SilentlyContinue)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:3000/api/auth/me\" -UseBasicParsing -ErrorAction SilentlyContinue | Select-Object StatusCode, StatusDescription)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:3000/api/prometheus/sync\" -Method GET -UseBasicParsing -ErrorAction SilentlyContinue | Select-Object StatusCode, Content)",
+      "WebFetch(domain:mofaex.gov.sy)",
+      "PowerShell($f = \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\\\\public\\\\logos\\\\mofaex-logo.svg\"; \"$\\([Math]::Round\\(\\(Get-Item $f\\).Length/1KB, 1\\)\\) KB — starts: $\\(\\(Get-Content $f -TotalCount 1\\)\\)\")",
+      "PowerShell(cd \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\"; \\(Get-Content package.json | ConvertFrom-Json\\).devDependencies.tailwindcss)"
     ]
   }
 }
