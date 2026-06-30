@@ -5,23 +5,23 @@ import type { Locale } from '@/lib/i18n/config'
 
 interface Props {
   locale: Locale
-  departments: { id: string; name: string }[]
 }
 
-export function ContactForm({ locale, departments }: Props) {
+export function ContactForm({ locale }: Props) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
   const [error, setError] = useState<string | null>(null)
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    const form = e.currentTarget
     setStatus('sending')
     setError(null)
     try {
-      const fd = new FormData(e.currentTarget)
+      const fd = new FormData(form)
       const res = await fetch('/api/contact', { method: 'POST', body: fd })
       if (!res.ok) throw new Error(await res.text())
       setStatus('sent')
-      e.currentTarget.reset()
+      form.reset()
     } catch (err) {
       setStatus('error')
       setError(err instanceof Error ? err.message : String(err))
@@ -77,21 +77,6 @@ export function ContactForm({ locale, departments }: Props) {
             type="tel"
             className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-fluid-sm focus:border-primary-600 focus:outline-none"
           />
-        </div>
-        <div>
-          <label className="mb-1 block text-fluid-sm font-medium text-ink" htmlFor="departmentId">
-            {L('القسم', 'Department')}
-          </label>
-          <select
-            id="departmentId"
-            name="departmentId"
-            className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-fluid-sm focus:border-primary-600 focus:outline-none"
-          >
-            <option value="">{L('— اختر —', '— Choose —')}</option>
-            {departments.map((d) => (
-              <option key={d.id} value={d.id}>{d.name}</option>
-            ))}
-          </select>
         </div>
       </div>
 

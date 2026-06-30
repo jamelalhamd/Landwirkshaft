@@ -14,7 +14,6 @@ interface ContactMessage {
   phone: string | null
   subject: string
   body: string
-  department_id: string | null
   attachment_url: string | null
   status: MsgStatus
   created_at: string
