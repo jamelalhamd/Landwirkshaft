@@ -8,40 +8,38 @@ import { revalidateContent } from '@/lib/admin/revalidate'
 const UpdateSchema = z.object({
   title_ar: z.string().min(1).optional(),
   title_en: z.string().min(1).optional(),
-  description_ar: z.string().nullable().optional(),
-  description_en: z.string().nullable().optional(),
-  category: z.string().optional(),
-  file_url: z.string().min(1).optional(),
-  file_size_bytes: z.number().int().nonnegative().optional(),
-  page_count: z.number().int().positive().nullable().optional(),
-  issued_at: z.string().optional(),
+  abstract_ar: z.string().optional(),
+  abstract_en: z.string().optional(),
+  authors: z.array(z.string()).optional(),
+  field: z.string().optional(),
+  year: z.number().int().min(1900).max(2100).optional(),
+  issn: z.string().nullable().optional(),
+  doi: z.string().nullable().optional(),
+  pdf_url: z.string().nullable().optional(),
+  citations_count: z.number().int().nonnegative().optional(),
   status: z.enum(['draft', 'review', 'published', 'archived']).optional(),
 })
 
-// PUT /api/admin/documents/[id]
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const session = await getSession()
   if (!session.authenticated || !session.roleAtLeast('editor')) {
-    return NextResponse.json({ error: 'Nicht autorisiert' }, { status: 401 })
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const { id } = await params
-  const docRef = adminDb().collection('documents').doc(id)
+  const docRef = adminDb().collection('research').doc(id)
   const doc = await docRef.get()
   if (!doc.exists) {
-    return NextResponse.json({ error: 'Nicht gefunden' }, { status: 404 })
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
   const body = await request.json() as unknown
   const parse = UpdateSchema.safeParse(body)
   if (!parse.success) {
-    return NextResponse.json(
-      { error: 'Validierungsfehler', issues: parse.error.issues },
-      { status: 400 },
-    )
+    return NextResponse.json({ error: 'Validation error', issues: parse.error.issues }, { status: 400 })
   }
 
   const data = parse.data
@@ -54,37 +52,36 @@ export async function PUT(
   await writeAuditLog({
     actorId: session.profile!.uid,
     action: 'update',
-    resourceType: 'documents',
+    resourceType: 'research',
     resourceId: id,
     metadata: { fields: Object.keys(data) },
     request,
   })
 
-  revalidateContent('documents')
+  revalidateContent('research')
   return NextResponse.json({ ok: true })
 }
 
-// DELETE /api/admin/documents/[id] — nur admin+
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const session = await getSession()
   if (!session.authenticated || !session.roleAtLeast('admin')) {
-    return NextResponse.json({ error: 'Admin-Berechtigung erforderlich' }, { status: 403 })
+    return NextResponse.json({ error: 'Admin role required' }, { status: 403 })
   }
 
   const { id } = await params
-  await adminDb().collection('documents').doc(id).delete()
+  await adminDb().collection('research').doc(id).delete()
 
   await writeAuditLog({
     actorId: session.profile!.uid,
     action: 'delete',
-    resourceType: 'documents',
+    resourceType: 'research',
     resourceId: id,
     request,
   })
 
-  revalidateContent('documents')
+  revalidateContent('research')
   return NextResponse.json({ ok: true })
 }

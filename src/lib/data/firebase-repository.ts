@@ -137,13 +137,15 @@ function toMedia(doc: DocumentSnapshot): MediaItem {
 //   firebase deploy --only firestore:indexes
 export const firebaseRepository: ContentRepository = {
   async getLatestNews(limit) {
+    // orderBy omitted — composite index may still be building; sort in memory
     const snap = await adminDb()
       .collection('news')
       .where('status', '==', 'published')
-      .orderBy('publish_at', 'desc')
-      .limit(limit)
       .get()
-    return snap.docs.map(toNews)
+    return snap.docs
+      .map(toNews)
+      .sort((a, b) => (b.publish_at ?? '').localeCompare(a.publish_at ?? ''))
+      .slice(0, limit)
   },
 
   async getBreakingNews() {
@@ -151,18 +153,23 @@ export const firebaseRepository: ContentRepository = {
       .collection('news')
       .where('is_breaking', '==', true)
       .where('status', '==', 'published')
-      .orderBy('publish_at', 'desc')
-      .limit(5)
       .get()
-    return snap.docs.map((d) => {
-      const v = d.data()
-      return {
-        id: d.id,
-        title_ar: (v['title_ar'] as string | undefined) ?? '',
-        title_en: (v['title_en'] as string | undefined) ?? '',
-        slug: (v['slug'] as string | undefined) ?? d.id,
-      }
-    })
+    return snap.docs
+      .sort((a, b) => {
+        const aAt = a.data()['publish_at'] ? toIso(a.data()['publish_at']) : ''
+        const bAt = b.data()['publish_at'] ? toIso(b.data()['publish_at']) : ''
+        return bAt.localeCompare(aAt)
+      })
+      .slice(0, 5)
+      .map((d) => {
+        const v = d.data()
+        return {
+          id: d.id,
+          title_ar: (v['title_ar'] as string | undefined) ?? '',
+          title_en: (v['title_en'] as string | undefined) ?? '',
+          slug: (v['slug'] as string | undefined) ?? d.id,
+        }
+      })
   },
 
   async getNewsBySlug(slug) {
@@ -179,13 +186,12 @@ export const firebaseRepository: ContentRepository = {
   async listStaff(filters) {
     let query = adminDb()
       .collection('staff')
-      .where('is_active', '==', true)
-      .orderBy('display_order') as FirebaseFirestore.Query
+      .where('is_active', '==', true) as FirebaseFirestore.Query
     if (filters?.departmentId) {
       query = query.where('department_id', '==', filters.departmentId)
     }
     const snap = await query.get()
-    let list = snap.docs.map(toStaff)
+    let list = snap.docs.map(toStaff).sort((a, b) => a.display_order - b.display_order)
     if (filters?.query) {
       const q = filters.query.toLowerCase()
       list = list.filter(
@@ -198,34 +204,35 @@ export const firebaseRepository: ContentRepository = {
   },
 
   async listDepartments() {
-    const snap = await adminDb().collection('departments').orderBy('name_ar').get()
-    return snap.docs.map(toDepartment)
+    const snap = await adminDb().collection('departments').get()
+    return snap.docs.map(toDepartment).sort((a, b) => a.name_ar.localeCompare(b.name_ar, 'ar'))
   },
 
   async listDocuments() {
     const snap = await adminDb()
       .collection('documents')
       .where('status', '==', 'published')
-      .orderBy('issued_at', 'desc')
       .get()
-    return snap.docs.map(toDocument)
+    return snap.docs
+      .map(toDocument)
+      .sort((a, b) => b.issued_at.localeCompare(a.issued_at))
   },
 
   async listResearch() {
     const snap = await adminDb()
       .collection('research')
       .where('status', '==', 'published')
-      .orderBy('year', 'desc')
       .get()
-    return snap.docs.map(toResearch)
+    return snap.docs
+      .map(toResearch)
+      .sort((a, b) => b.year - a.year)
   },
 
   async listMedia() {
-    const snap = await adminDb()
-      .collection('media')
-      .orderBy('created_at', 'desc')
-      .get()
-    return snap.docs.map(toMedia)
+    const snap = await adminDb().collection('media').get()
+    return snap.docs
+      .map(toMedia)
+      .sort((a, b) => b.created_at.localeCompare(a.created_at))
   },
 
   async getSiteStats() {

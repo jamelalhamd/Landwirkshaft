@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { getSession } from '@/lib/auth/getSession'
 import { adminDb } from '@/lib/firebase/admin'
 import { writeAuditLog } from '@/lib/admin/audit'
+import { revalidateContent } from '@/lib/admin/revalidate'
 
 const UpdateSchema = z.object({
   title_ar: z.string().min(1).optional(),
@@ -59,6 +60,7 @@ export async function PUT(
     data.status = 'review'
   }
 
+  const slug = (docData['slug'] as string | undefined) ?? id
   await docRef.update({ ...data, updated_at: new Date().toISOString() })
 
   await writeAuditLog({
@@ -70,6 +72,7 @@ export async function PUT(
     request,
   })
 
+  revalidateContent('news', data.slug ?? slug)
   return NextResponse.json({ ok: true })
 }
 
@@ -84,6 +87,8 @@ export async function DELETE(
   }
 
   const { id } = await params
+  const docSnap = await adminDb().collection('news').doc(id).get()
+  const slug = (docSnap.data()?.['slug'] as string | undefined) ?? id
   await adminDb().collection('news').doc(id).delete()
 
   await writeAuditLog({
@@ -94,5 +99,6 @@ export async function DELETE(
     request,
   })
 
+  revalidateContent('news', slug)
   return NextResponse.json({ ok: true })
 }

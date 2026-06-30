@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { getSession } from '@/lib/auth/getSession'
 import { adminDb } from '@/lib/firebase/admin'
 import { writeAuditLog } from '@/lib/admin/audit'
+import { revalidateContent } from '@/lib/admin/revalidate'
 
 const CreateSchema = z.object({
   title_ar: z.string().min(1, 'Pflichtfeld'),
@@ -93,5 +94,6 @@ export async function POST(request: Request) {
     request,
   })
 
+  revalidateContent('news', data.slug)
   return NextResponse.json({ id: docRef.id }, { status: 201 })
 }

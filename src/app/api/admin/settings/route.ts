@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
+import { revalidatePath } from 'next/cache'
 import { getSession } from '@/lib/auth/getSession'
 import { adminDb } from '@/lib/firebase/admin'
 import { writeAuditLog } from '@/lib/admin/audit'
@@ -56,6 +57,12 @@ export async function PUT(request: Request) {
     metadata: { fields: Object.keys(parse.data) },
     request,
   })
+
+  // Revalidate every locale's home page so logo/hero changes appear immediately
+  for (const locale of ['ar', 'en']) {
+    revalidatePath(`/${locale}`)
+    revalidatePath(`/${locale}`, 'layout')
+  }
 
   return NextResponse.json({ ok: true })
 }

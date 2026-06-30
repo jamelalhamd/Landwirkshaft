@@ -75,6 +75,14 @@ service cloud.firestore {
       allow delete: if isAtLeast('admin');
     }
 
+    // ── Departments ───────────────────────────────────────────────────────────
+
+    match /departments/{deptId} {
+      allow read: if true;
+      allow create, update: if isAtLeast('admin');
+      allow delete: if isAtLeast('admin');
+    }
+
     // ── Staff members ─────────────────────────────────────────────────────────
 
     match /staff/{memberId} {

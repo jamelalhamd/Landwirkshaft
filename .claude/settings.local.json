@@ -29,7 +29,9 @@
       "PowerShell(Invoke-WebRequest -Uri \"http://localhost:3000/api/prometheus/sync\" -Method GET -UseBasicParsing -ErrorAction SilentlyContinue | Select-Object StatusCode, Content)",
       "WebFetch(domain:mofaex.gov.sy)",
       "PowerShell($f = \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\\\\public\\\\logos\\\\mofaex-logo.svg\"; \"$\\([Math]::Round\\(\\(Get-Item $f\\).Length/1KB, 1\\)\\) KB — starts: $\\(\\(Get-Content $f -TotalCount 1\\)\\)\")",
-      "PowerShell(cd \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\"; \\(Get-Content package.json | ConvertFrom-Json\\).devDependencies.tailwindcss)"
+      "PowerShell(cd \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\"; \\(Get-Content package.json | ConvertFrom-Json\\).devDependencies.tailwindcss)",
+      "Bash(npx firebase *)",
+      "PowerShell(ls \"C:\\\\Users\\\\takir\\\\Desktop\\\\test antigravitzy\\\\landwirksahaf\\\\landwirksahft opts\\\\src\\\\app\\\\api\\\\admin\\\\\")"
     ]
   }
 }
